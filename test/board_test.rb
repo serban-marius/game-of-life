@@ -21,21 +21,36 @@ describe Board do
 
   describe 'when one generation is executed' do
     describe 'alive cells with less than two neighbours' do
-      let(:expected_board) {
-        [
-          [false, false, false],
-          [false, false, true],
-          [false, true, true]
-        ]
-      }
+      describe 'after one generation' do
+        before do
+          @board = Board.new(rows, columns, board)
+          @board.next_generation
+        end
 
-      before do
-        @board = Board.new(rows, columns, board)
-        @board.next_generation
+        it 'must die' do
+          _(@board.show_board[0][0]).must_equal false
+        end
       end
+    end
 
-      it 'must die' do
-        _(@board.show_board).must_equal expected_board
+    describe 'alive cells with more than three neighbours' do
+      describe 'after one generation' do
+        let(:board) {
+          [
+            [true, false, false],
+            [false, true, true],
+            [false, true, true]
+          ]
+        }
+
+        before do
+          @board = Board.new(rows, columns, board)
+          @board.next_generation
+        end
+
+        it 'must die' do
+          _(@board.show_board[1][1]).must_equal false
+        end
       end
     end
   end

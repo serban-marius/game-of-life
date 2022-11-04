@@ -48,11 +48,24 @@ class Board
 
   sig { params(row: Integer, column: Integer).returns(T::Boolean) }
   def stays_alive?(row, column)
-    how_many_neighbours?(row, column) > 1
+    neighbours_count = how_many_neighbours(row, column)
+    return false if underpopulation?(neighbours_count)
+    return false if overcrowding?(neighbours_count)
+    true
+  end
+
+  sig { params(neighbours_count: Integer).returns(T::Boolean) }
+  def underpopulation?(neighbours_count)
+    neighbours_count < 2
+  end
+
+  sig { params(neighbours_count: Integer).returns(T::Boolean) }
+  def overcrowding?(neighbours_count)
+    neighbours_count > 3
   end
 
   sig { params(row: Integer, column: Integer).returns(Integer) }
-  def how_many_neighbours?(row, column)
+  def how_many_neighbours(row, column)
     neighbours = 0
     neighbours += 1 if upper_left(row, column)
     neighbours += 1 if upper(row, column)

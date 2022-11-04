@@ -29,7 +29,7 @@ class Board
     (0..rows).each do |row|
       future_board[row] = [] if future_board[row].nil?
       (0..columns).each do |column|
-        future_board[row][column] = false
+        future_board[row][column] = resuscitate?(row, column)
         if is_alive?(row, column)
           future_board[row][column] = stays_alive?(row, column)
         end
@@ -54,6 +54,12 @@ class Board
     true
   end
 
+  sig { params(row: Integer, column: Integer).returns(T::Boolean) }
+  def resuscitate?(row, column)
+    return true if goodly_neighbours?(how_many_neighbours(row, column))
+    false
+  end
+
   sig { params(neighbours_count: Integer).returns(T::Boolean) }
   def underpopulation?(neighbours_count)
     neighbours_count < 2
@@ -62,6 +68,11 @@ class Board
   sig { params(neighbours_count: Integer).returns(T::Boolean) }
   def overcrowding?(neighbours_count)
     neighbours_count > 3
+  end
+
+  sig { params(neighbours_count: Integer).returns(T::Boolean) }
+  def goodly_neighbours?(neighbours_count)
+    neighbours_count.equal?(3)
   end
 
   sig { params(row: Integer, column: Integer).returns(Integer) }

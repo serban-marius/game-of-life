@@ -78,6 +78,14 @@ describe Board do
 
     describe 'death cells with exactly three neighbours' do
       describe 'after one generation' do
+        let(:board) {
+          [
+            [false, false, false],
+            [false, false, true],
+            [false, true, true]
+          ]
+        }
+
         before do
           @board = Board.new(rows, columns, board)
           @board.next_generation

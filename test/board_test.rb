@@ -19,11 +19,11 @@ describe Board do
 
   describe 'when one generation is executed' do
     describe 'alive cells with less than two neighbours' do
-      let(:expected_board) {[
+      let(:expected_board) { [
         [false, false, false],
         [false, false, true],
         [false, true, true]
-      ]}
+      ] }
 
       before do
         @board = Board.new(rows, columns, board)

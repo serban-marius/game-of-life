@@ -75,5 +75,18 @@ describe Board do
         end
       end
     end
+
+    describe 'death cells with exactly three neighbours' do
+      describe 'after one generation' do
+        before do
+          @board = Board.new(rows, columns, board)
+          @board.next_generation
+        end
+
+        it 'become alive' do
+          _(@board.show_board[1][1]).must_equal true
+        end
+      end
+    end
   end
 end

@@ -48,6 +48,11 @@ class Board
 
   sig { params(row: Integer, column: Integer).returns(T::Boolean) }
   def stays_alive?(row, column)
+    how_many_neighbours?(row, column) > 1
+  end
+
+  sig { params(row: Integer, column: Integer).returns(Integer) }
+  def how_many_neighbours?(row, column)
     neighbours = 0
     neighbours += 1 if upper_left(row, column)
     neighbours += 1 if upper(row, column)
@@ -58,55 +63,83 @@ class Board
     neighbours += 1 if bottom(row, column)
     neighbours += 1 if bottom_right(row, column)
 
-    neighbours > 1
+    neighbours
   end
 
   sig { params(row: Integer, column: Integer).returns(T::Boolean) }
   def upper_left(row, column)
-    return false if (go_up(row) < 0) || (go_left(column) < 0)
+    return false unless can_go_up?(row) && can_go_left?(column)
+
     board[go_up(row)][go_left(column)]
   end
 
   sig { params(row: Integer, column: Integer).returns(T::Boolean) }
   def upper(row, column)
-    return false if go_up(row) < 0
+    return false unless can_go_up?(row)
+
     board[go_up(row)][column]
   end
 
   sig { params(row: Integer, column: Integer).returns(T::Boolean) }
   def upper_right(row, column)
-    return false if (go_up(row) < 0) || (go_right(column) > columns)
+    return false unless can_go_up?(row) && can_go_right?(column)
+
     board[go_up(row)][go_right(column)]
   end
 
   sig { params(row: Integer, column: Integer).returns(T::Boolean) }
   def left(row, column)
-    return false if go_left(column) < 0
+    return false unless can_go_left?(column)
+
     board[row][go_left(column)]
   end
 
   sig { params(row: Integer, column: Integer).returns(T::Boolean) }
   def right(row, column)
-    return false if go_right(column) > columns
+    return false unless can_go_right?(column)
+
     board[row][go_right(column)]
   end
 
   sig { params(row: Integer, column: Integer).returns(T::Boolean) }
   def bottom_left(row, column)
-    return false if (go_down(row) > rows) || (go_left(column) < 0)
+    return false unless can_go_down?(row) && can_go_left?(column)
+
     board[go_down(row)][go_left(column)]
   end
 
   sig { params(row: Integer, column: Integer).returns(T::Boolean) }
   def bottom(row, column)
-    return false if go_down(row) > rows
+    return false unless can_go_down?(row)
+
     board[go_down(row)][column]
   end
 
   sig { params(row: Integer, column: Integer).returns(T::Boolean) }
   def bottom_right(row, column)
-    return false if (go_down(row) > rows) || (go_right(column) > columns)
+    return false unless can_go_down?(row) && can_go_right?(column)
+
     board[go_down(row)][go_right(column)]
+  end
+
+  sig { params(row: Integer).returns(T::Boolean) }
+  def can_go_up?(row)
+    go_up(row) >= 0
+  end
+
+  sig { params(row: Integer).returns(T::Boolean) }
+  def can_go_down?(row)
+    go_down(row) <= rows
+  end
+
+  sig { params(column: Integer).returns(T::Boolean) }
+  def can_go_left?(column)
+    go_left(column) >= 0
+  end
+
+  sig { params(column: Integer).returns(T::Boolean) }
+  def can_go_right?(column)
+    go_right(column) <= columns
   end
 
   sig { params(row: Integer).returns(Integer) }

@@ -53,5 +53,27 @@ describe Board do
         end
       end
     end
+
+    describe 'alive cells with more two or three neighbours' do
+      describe 'after one generation' do
+        let(:board) {
+          [
+            [true, true, true],
+            [true, true, false],
+            [false, false, false]
+          ]
+        }
+
+        before do
+          @board = Board.new(rows, columns, board)
+          @board.next_generation
+        end
+
+        it 'stay alive' do
+          _(@board.show_board[0][0]).must_equal true
+          _(@board.show_board[0][2]).must_equal true
+        end
+      end
+    end
   end
 end
